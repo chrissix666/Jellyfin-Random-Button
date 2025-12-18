@@ -1,6 +1,6 @@
 # Jellyfin Random Button (Fork)
 
-Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this modification **locks the random button to the library and media type you enter from the main Home view**. All library IDs are **neutralized** and configurable, including **HOME1 and HOME2**.
+Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this modification **locks the random button to the library and media type you enter from the main Home view.
 
 ---
 
