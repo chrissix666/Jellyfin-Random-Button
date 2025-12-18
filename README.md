@@ -1,93 +1,51 @@
-# **Functionality has been moved to [Jellyfin-Enhanced](https://github.com/n00bcodr/Jellyfin-Enhanced)**
+# Jellyfin Random Button (Fork)
 
-```
-                  _     ____    ____  _   _  ___ __     __ _____  ____
-                 / \   |  _ \  / ___|| | | ||_ _|\ \   / /| ____||  _ \
-  _____  _____  / _ \  | |_) || |    | |_| | | |  \ \ / / |  _|  | | | | _____  _____
- |_____||_____|/ ___ \ |  _ < | |___ |  _  | | |   \ V /  | |___ | |_| ||_____||_____|
-              /_/   \_\|_| \_\ \____||_| |_||___|   \_/   |_____||____/
-
-```
-
-# Jellyfin Random Button
-
-Adds a "shuffle" button to the Jellyfin header that lets you jump to a random movie or TV show from your library. It's a great way to discover something to watch when you can't decide!
-
-![image](https://github.com/user-attachments/assets/ce373f06-e88e-4033-a05f-2625c962c7c2)
+Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this modification **locks the random button to the library and media type you enter from the main Home view**. All library IDs are **neutralized** and configurable, including **HOME1 and HOME2**.
 
 ---
 
-## ⚙️ Configuration (Optional)
-
-You can customize which items the random button will pick from.
-
-1.  Open the `randombutton.js` file in a text editor.
-2.  Find the `ITEM_TYPES_TO_INCLUDE` variable at the top of the file.
-3.  Change its value to one of the following:
-    * `'Movie'` - (Default) Only picks random movies.
-    * `'Series'` - Only picks random TV shows.
-    * `'Movie,Series'` - Picks from both movies and TV shows.
-
-<br>
-
-```javascript
-const ITEM_TYPES_TO_INCLUDE = 'Movie';
-```
-<br>
-
 ## 🔧 Installation
 
-### Manual
+Installation is the same as the original, except:
 
-1. **Locate your Jellyfin web root directory.** <br>
-   _You can find the exact path in your Jellyfin server logs._
+- Use the modified `randombutton.js`.
+- **The file is prepared for a standard use library setup:**  
+  1 movie library, 1 series library, 1 collection library, 2 home video libraries.
 
-2. **Open the `index.html` file for editing:**
-   ```bash
-   sudo nano /usr/share/jellyfin/web/index.html
-   ```
+- **Edit the `randombutton.js`:**  
+  Copy and paste the library IDs from your main libraries and replace the `pasteyouridhere` placeholders.  
+  Don't forget to save the changes in your JavaScript injector and make a backup. Reload the browser site and go.
 
-3. **Just before the </head> tag, insert this line:**
-    ```html
-    <script defer src="randombutton.js"></script>
-    ```
+- If you want more libraries or different types of libraries, the code **needs to be adjusted for your setup**.  
+  It’s pretty quick with ChatGPT; it might make a few mistakes, but after 5 or so attempts it should work.
 
-4. **Download the script directly into your web root using**
+---
 
-   ```bash
-   curl -o /usr/share/jellyfin/web/randombutton.js https://raw.githubusercontent.com/n00bcodr/jellyfin-random-button/main/randombutton.js
-   ```
+## 💡 What it does & Behaviour
 
-   Or copy the contents of the script to a newly created randombutton.js in your webroot
+I love the Randomizer! But I wanted it to have a few more features and to behave more specifically within libraries. Here's what it does:
 
-5. **Clear your browser cache** and **reload the Jellyfin web page**.
+- **Home Screen behaviour:**  
+  From the Home View, the Random Button can select randomly from Movies, Sets, or Series. This also serves as the fallback behaviour, keeping the original functionality intact.
 
-### Plugin
+- **Special behaviour (locking to a library):**  
+  When you navigate from the Home Screen into a specific library (or if the Random Button selects an item from a library), the button will be **locked to that library and its media type** for all future random selections. Examples:
 
-1. **Install the [Custom JavaScript plugin](https://github.com/johnpc/jellyfin-plugin-custom-javascript)**
+  1. Main View → Random Button → Movies, Sets, or Series (fallback) → Random Button → locked to the library/media type for the next use.  
+  2. Main View → Click into a library manually → Random Button → locked to that library/media type for future uses.
 
-2. **Navigate to Dashboard -> Plugins -> Custom JavaScript**
+- **Scope and practical use:**  
+  The lock only applies when entering a library from the Main View. If you navigate through media via info pages, tags, genres, actors/people, or other filters, the Random Button **always falls back to the Main View behaviour**.  
 
-3. **Paste the contents of `randombutton.js` into the textarea**
+  This is especially useful for large libraries or Home Video collections. No matter how your folder structure is organized—flat or deeply nested—the randomization respects the library lock. If you have a well-organized collection, locking the Random Button to a library makes exploring it much more fun and controlled.
 
-4. **Restart Jellyfin**
-
-5. **Clear your browser cache** and **reload the Jellyfin web page**.
-
-<br>
-
-> [!NOTE]
-> Cross-check your jellyfin web path
-
-<br>
-
->[!NOTE]
->If your Jellyfin server updates, it may overwrite index.html. If the button disappears after an update, you will need to repeat the above
+---
 
 ## 🧪 Tested On
 
-- Jellyfin 10.10.7
+Tested only on Jellyfin 10.10.7, on Windows 11, on Chrome.
 
+---
 
 ## 📜 License
 
