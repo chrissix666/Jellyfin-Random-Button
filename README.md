@@ -65,7 +65,7 @@ MIT — free to use, modify, share.
 
 ---
 
-Further attempts were made, but I failed:
+## 💡 Further attempts were made, but I failed:
 
 Initially, I tried to make the script more general by doing it without library IDs, but unfortunately, I couldn’t manage it.
 
@@ -73,6 +73,6 @@ I also tried that when I go from the main view to random, and then switch betwee
 
 Furthermore, I tried that if I land on a TV show, the next shuffle would shuffle a season, and the following one an episode, but that didn’t work either. The same happened when I tried to shuffle a collection, and then shuffle a movie from it next—also without success. I also attempted to implement a 'sub-shuffle button' that would only appear for collections, series, or seasons. However, I had trouble restricting its visibility: it was supposed to appear only in the respective container, but the buttons either always appeared or didn’t appear at all.
 
-I published this in the hope that someone who knows the code better might take a look. I only worked on it with a few hours of time and a lot of help from ChatGPT. To be honest, I have very little understanding of coding itself and what it actually means—I’m not a coder. I would be grateful if someone could find the right code snippets and help make the shuffle code smarter and more flexible.
+I published this in the hope that someone who knows coding stuff better might take a look. I only worked on it with a few hours of time and a lot of help from ChatGPT. To be honest, I have very little understanding of coding itself and what it actually means. I’m not a coder. I would be grateful if someone could find the right code snippets and help make the shuffle code smarter and more flexible. Much appreciated
 
 
