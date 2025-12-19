@@ -7,8 +7,7 @@
     const FETCH_LIMIT = 50;
     const MAX_RETRIES = 15;
 
-    // Library ID placeholders
-    // Users must replace 'pasteyouridhere' with their own Jellyfin library IDs
+    // Library ID placeholders replaced with actual IDs
     const MOVIES_PARENT_ID      = 'pasteyouridhere'; // Jellyfin Media Type: Movie
     const TVSHOWS_PARENT_ID     = 'pasteyouridhere'; // Jellyfin Media Type: Series
     const COLLECTIONS_PARENT_ID = 'pasteyouridhere'; // Jellyfin Media Type: Set / Collection
@@ -90,8 +89,8 @@
 
     /************************************************
      * SECONDARY GLOBAL RANDOM FALLBACK
-     * Only triggered if ALL IDs are empty or 'pasteyouridhere' sitt set (no ID's set)
-     * Only Movies and Series, no Sets
+     * Only triggered if ALL IDs are empty or placeholders
+     * Only Movies and Series
      ************************************************/
     const fetchSecondaryGlobalRandom = async () => {
         const allPlaceholder = [MOVIES_PARENT_ID, TVSHOWS_PARENT_ID, COLLECTIONS_PARENT_ID, HOME1_PARENT_ID, HOME2_PARENT_ID]
@@ -154,11 +153,22 @@
                     parentId = secondary.parentId;
                 } else {
                     const hash = window.location.hash.toLowerCase();
-                    const params = new URLSearchParams(hash.split('?')[1]);
-                    parentId = params.get('parentid');
 
-                    item = await fetchRandomItem(parentId);
-                    if (!item) {
+                    let params;
+                    if (hash.includes('?')) {
+                        params = new URLSearchParams(hash.split('?')[1]);
+                        parentId = params.get('parentid');
+                    }
+
+                    if (parentId) {
+                        item = await fetchRandomItem(parentId);
+                        if (!item) {
+                            const fallback = await fetchHomeFallback();
+                            item = fallback.item;
+                            parentId = fallback.parentId;
+                        }
+                    } else {
+                        // Kein parentId vorhanden → benutze fetchHomeFallback(), TV Shows werden korrekt abgedeckt
                         const fallback = await fetchHomeFallback();
                         item = fallback.item;
                         parentId = fallback.parentId;
