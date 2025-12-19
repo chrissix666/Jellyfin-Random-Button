@@ -73,6 +73,10 @@ I also tried that when I go from the main view to random, and then switch betwee
 
 Furthermore, I tried that if I land on a TV show, the next shuffle would shuffle a season, and the following one an episode, but that didn’t work either. The same happened when I tried to shuffle a collection, and then shuffle a movie from it next—also without success. I also attempted to implement a 'sub-shuffle button' that would only appear for collections, series, or seasons. However, I had trouble restricting its visibility: it was supposed to appear only in the respective container, but the buttons either always appeared or didn’t appear at all.
 
+I also tried to get randomness for other labels like tags, genres, studios, and actors. For the tags, I even managed to shuffle pre-stored tags. The problem: I couldn’t limit it to the current library or media type. It always showed a random tag from all the tags in the Jellyfin database, completely unfiltered. I couldn’t find a way to narrow it down properly. Maybe someone knows how to limit that.
+
 I published this in the hope that someone who knows coding stuff better might take a look. I only worked on it with a few hours of time and a lot of help from ChatGPT. To be honest, I have very little understanding of coding itself and what it actually means. I’m not a coder. I would be grateful if someone could find the right code snippets and help make the shuffle code smarter and more flexible. Much appreciated
+
+
 
 
