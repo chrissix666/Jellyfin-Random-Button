@@ -39,6 +39,9 @@ I love the Randomizer! But I wanted it to have a few more features and to behave
 
 - **Fallback=Home Screen behaviour**  
   The lock only applies when entering a library from the Main View. If you navigate through media via info pages, tags, genres, actors/people, or other filters, etc.., the Random Button always falls back to the Home Screen behaviour. (Movie or Set or Series)
+
+- **The Secondary Global Fallback**
+Is a vanilla fallback that triggers when no library IDs are filled in, the 'pasteyouridhere' placeholders still in place. It randomly selects only Movies or Series (no Sets/Collections) from the user’s library, ensuring the random button always opens an item even without configured IDs, effectively reverting to the vanilla behavior with no ID adjustments.
 ---
 
 ## 🧪 Tested On
