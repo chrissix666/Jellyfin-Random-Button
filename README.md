@@ -14,7 +14,7 @@ Installation is the same as the original, except:
 
 - **Edit the `randombutton.js`:**  
   Copy and paste the library IDs from your main libraries and replace the `pasteyouridhere` placeholders.  
-  Don't forget to save the changes in your JavaScript injector and make a backup. Reload the browser site and go.
+  Don't forget to save the changes in your JavaScript injector. Reload the browser site and go.
 
 - If you want more libraries or different types of libraries, the code **needs to be adjusted for your setup**.  
   It’s pretty quick with ChatGPT; it might make a few mistakes, but after a few attempts it should work.
