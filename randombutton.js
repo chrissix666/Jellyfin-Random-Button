@@ -10,7 +10,7 @@
     // Library ID placeholders replaced with actual IDs
     const MOVIES_PARENT_ID      = 'pasteyouridhere'; // Jellyfin Media Type: Movie
     const TVSHOWS_PARENT_ID     = 'pasteyouridhere'; // Jellyfin Media Type: Series
-    const COLLECTIONS_PARENT_ID = 'pasteyouridhere'; // Jellyfin Media Type: Other (=Set / Collection)
+    const COLLECTIONS_PARENT_ID = 'pasteyouridhere'; // Jellyfin Media Type: Other (=Sets / Collectiona)
     const HOME1_PARENT_ID       = 'pasteyouridhere'; // Jellyfin Media Type: Home Videos
     const HOME2_PARENT_ID       = 'pasteyouridhere'; // Jellyfin Media Type: Home Videos
 
