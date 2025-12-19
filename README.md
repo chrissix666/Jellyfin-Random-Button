@@ -25,13 +25,13 @@ Installation is the same as the original, except:
 
 I love the Randomizer! But I wanted it to have a few more features and to behave more specifically within libraries. Here's what it does:
 
-- **Home Screen behaviour:**  
-  From the Home View, the Random Button can select randomly from Movies, Sets, or Series. This also serves as the fallback behaviour, keeping the original functionality intact.
+- **Home Screen behaviour=Fallback:**  
+  From the Home View, the Random Button can select randomly from a Movie, a Set, or a Series. Depending on the result you are now **locked to that library and its media type** for all future random selections.. This also serves as the fallback behaviour, keeping the original functionality intact.
 
 - **Special behaviour (locking to a library):**  
   When you navigate from the Home Screen into a specific library (or if the Random Button selects an item from a library), the button will be **locked to that library and its media type** for all future random selections. Examples:
 
-  1. Main View → Random Button → Movies, Sets, or Series (fallback) → Random Button → locked to the library/media type for the next use.  
+  1. Main View → Random Button → Movie or Set or Series (=Home Screen behaviour=Fallback) → Random Button → locked to the library/media type for the next use.  
   2. Main View → Click into a library manually → Random Button → locked to that library/media type for future uses.
 
 - **Special Behavior for Home Videos:**  
