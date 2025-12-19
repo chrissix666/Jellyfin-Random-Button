@@ -90,8 +90,8 @@
 
     /************************************************
      * SECONDARY GLOBAL RANDOM FALLBACK
-     * Only triggered if ALL IDs are empty or placeholders
-     * Only Movies and Series
+     * Only triggered if ALL IDs are empty or 'pasteyouridhere' sitt set (no ID's set)
+     * Only Movies and Series, no Sets
      ************************************************/
     const fetchSecondaryGlobalRandom = async () => {
         const allPlaceholder = [MOVIES_PARENT_ID, TVSHOWS_PARENT_ID, COLLECTIONS_PARENT_ID, HOME1_PARENT_ID, HOME2_PARENT_ID]
