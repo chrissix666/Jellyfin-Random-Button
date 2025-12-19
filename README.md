@@ -75,6 +75,8 @@ Furthermore, I tried that if I land on a TV show, the next shuffle would shuffle
 
 I also tried to get randomness for other labels like tags, genres, studios, and actors. For the tags, I even managed to shuffle pre-stored tags. The problem: I couldn’t limit it to the current library or media type. It always showed a random tag from all the tags in the Jellyfin database, completely unfiltered. I couldn’t find a way to narrow it down properly. Maybe someone knows how to limit that.
 
+Edit: I will also try to see if it’s possible, when you’re on an actor and there are media available (movies, series, episodes), to shuffle something from that.
+
 I published this in the hope that someone who knows coding stuff better might take a look. I only worked on it with a few hours of time and a lot of help from ChatGPT. To be honest, I have very little understanding of coding itself and what it actually means. I’m not a coder. I would be grateful if someone could find the right code snippets and help make the shuffle code smarter and more flexible. Much appreciated
 
 
