@@ -35,9 +35,7 @@ I love the Randomizer! But I wanted it to have a few more features and to behave
   2. Main View → Click into a library manually → Random Button → locked to that library/media type for future uses.
 
 - **Special Behavior for Home Videos:**  
-  Randomization current folder level recursively, so whether your collection is flat or deeply nested, the button won’t jump across unrelated sections. This creates a more controlled and enjoyable browsing experience, letting you explore your Home Videos folder by folder without losing the element of surprise.
-
-  This feature is particularly useful for large Home Video libraries. When you enter a library manually or the Random Button selects one from the Home Screen, it becomes locked to that library, ensuring that all future random selections stay within it.
+  Randomization current folder level recursively, so whether your collection is flat or deeply nested, the button won’t jump across unrelated sections. This creates a more controlled and enjoyable browsing experience, letting you explore your Home Videos folder by folder without losing the element of surprise. This feature is particularly useful for large and tree nested Home Video libraries. 
 
 - **Fallback=Home Screen behaviour**  
   The lock only applies when entering a library from the Main View. If you navigate through media via info pages, tags, genres, actors/people, or other filters, etc.., the Random Button always falls back to the Home Screen behaviour. (Movie or Set or Series)
