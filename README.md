@@ -50,3 +50,15 @@ Tested only on Jellyfin 10.10.7, on Windows 11, on Chrome.
 ## 📜 License
 
 MIT — free to use, modify, share.
+
+> [!NOTE]
+> **Jellyfin Enhanced disclaimer**
+>
+> Jellyfin Enhanced also includes a Random Button. However, since it is there not injected as a standalone JavaScript, the behaviour of this fork when used together with Jellyfin Enhanced is unknown.
+>
+> If you are using Jellyfin Enhanced, you should **disable its Random Button** to avoid conflicts.
+>
+> Jellyfin Enhanced is a great project, but it is currently not used on my side. My setup is still running on Jellyfin 10.10.7, and Jellyfin Enhanced caused subtitle-related bugs and some other issues that were not fully clear.
+>
+> In the end, only the Random Button functionality was needed. Recently i registered that the Random Button can also be injected independently via a JavaScript injector, without using Jellyfin Enhanced at all.
+
