@@ -45,12 +45,6 @@ I love the Randomizer! But I wanted it to have a few more features and to behave
 
 Tested only on Jellyfin 10.10.7, on Windows 11, on Chrome.
 
----
-
-## 📜 License
-
-MIT — free to use, modify, share.
-
 > [!NOTE]
 > **Jellyfin Enhanced disclaimer**
 >
@@ -61,4 +55,12 @@ MIT — free to use, modify, share.
 > Jellyfin Enhanced is a great project, but it is currently not used on my side. My setup is still running on Jellyfin 10.10.7, and Jellyfin Enhanced caused subtitle-related bugs and some other issues that were not fully clear.
 >
 > In the end, only the Random Button functionality was needed. Recently i registered that the Random Button can also be injected independently via a JavaScript injector, without using Jellyfin Enhanced at all.
+
+
+---
+
+## 📜 License
+
+MIT — free to use, modify, share.
+
 
