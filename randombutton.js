@@ -7,12 +7,11 @@
     const FETCH_LIMIT = 50;
     const MAX_RETRIES = 15;
 
-    // Library ID placeholders replaced with actual IDs
-    const MOVIES_PARENT_ID      = 'pasteyouridhere'; // Jellyfin Media Type: Movie
-    const TVSHOWS_PARENT_ID     = 'pasteyouridhere'; // Jellyfin Media Type: Series
-    const COLLECTIONS_PARENT_ID = 'pasteyouridhere'; // Jellyfin Media Type: Other (=Sets / Collections)
-    const HOME1_PARENT_ID       = 'pasteyouridhere'; // Jellyfin Media Type: Home Videos
-    const HOME2_PARENT_ID       = 'pasteyouridhere'; // Jellyfin Media Type: Home Videos
+    const MOVIES_PARENT_ID = 'pasteyouridhere';
+    const TVSHOWS_PARENT_ID = 'pasteyouridhere';
+    const COLLECTIONS_PARENT_ID = 'pasteyouridhere';
+    const HOME1_PARENT_ID = 'pasteyouridhere';
+    const HOME2_PARENT_ID = 'pasteyouridhere';
 
     const getServerAddress = () => window.location.origin;
 
@@ -39,6 +38,23 @@
     };
 
     /************************************************
+     * ParentId Helper
+     ************************************************/
+    const getCurrentLibraryParentId = () => {
+        const hash = window.location.hash.toLowerCase();
+        const params = new URLSearchParams(hash.split('?')[1] || '');
+        let parentId = params.get('parentid') || params.get('topparentid');
+
+        // Fallback auf bekannte Libraries anhand Hash
+        if (!parentId) {
+            if (hash.includes('movies.html')) parentId = MOVIES_PARENT_ID;
+            else if (hash.includes('tv.html')) parentId = TVSHOWS_PARENT_ID;
+            else if (hash.includes('list.html')) parentId = COLLECTIONS_PARENT_ID;
+        }
+        return parentId || null;
+    };
+
+    /************************************************
      * RANDOM ITEM FETCH
      ************************************************/
     const fetchRandomItem = async (parentId, attempt = 1) => {
@@ -47,9 +63,9 @@
             if (!userId) return null;
 
             const base = `${getServerAddress()}/Users/${userId}/Items`;
-            const url = parentId === 'ALL'
-                ? `${base}?Recursive=true&SortBy=Random&Limit=${FETCH_LIMIT}&Fields=Type,Name&_=${Date.now()}`
-                : `${base}?ParentId=${parentId}&Recursive=true&SortBy=Random&Limit=${FETCH_LIMIT}&Fields=Type,Name&_=${Date.now()}`;
+            const url = parentId
+                ? `${base}?ParentId=${parentId}&Recursive=true&SortBy=Random&Limit=${FETCH_LIMIT}&Fields=Type,Name&_=${Date.now()}`
+                : `${base}?Recursive=true&SortBy=Random&Limit=${FETCH_LIMIT}&Fields=Type,Name&_=${Date.now()}`;
 
             const { Items = [] } = await ApiClient.ajax({ type: 'GET', url, dataType: 'json' });
 
@@ -58,12 +74,10 @@
             else if (parentId === TVSHOWS_PARENT_ID) filtered = Items.filter(i => i.Type === 'Series');
             else if (parentId === COLLECTIONS_PARENT_ID) filtered = Items.filter(i => i.Type === 'Set' || i.IsFolder);
             else if (parentId === HOME1_PARENT_ID || parentId === HOME2_PARENT_ID) filtered = Items.filter(i => i.Type === 'Video');
-            else if (parentId !== 'ALL') filtered = Items.filter(i => i.Type === 'Video'); 
-            else if (parentId === 'ALL') filtered = Items.filter(i => ['Movie','Series','Set'].includes(i.Type));
-            else filtered = [];
+            else if (parentId) filtered = Items.filter(i => i.Type === 'Video');
+            else filtered = Items.filter(i => ['Movie','Series','Set'].includes(i.Type)); // Fallback nur Movies/Series/Sets
 
             if (!filtered.length && attempt < MAX_RETRIES) return fetchRandomItem(parentId, attempt + 1);
-
             return filtered[Math.floor(Math.random() * filtered.length)] || null;
         } catch {
             return attempt < MAX_RETRIES ? fetchRandomItem(parentId, attempt + 1) : null;
@@ -88,20 +102,18 @@
     };
 
     /************************************************
-     * SECONDARY GLOBAL RANDOM FALLBACK
-     * Only triggered if ALL IDs are empty or placeholders
-     * Only Movies and Series
+     * SECONDARY GLOBAL FALLBACK
      ************************************************/
     const fetchSecondaryGlobalRandom = async () => {
-        const allPlaceholder = [MOVIES_PARENT_ID, TVSHOWS_PARENT_ID, COLLECTIONS_PARENT_ID, HOME1_PARENT_ID, HOME2_PARENT_ID]
+        const idsArePlaceholder = [MOVIES_PARENT_ID, TVSHOWS_PARENT_ID, COLLECTIONS_PARENT_ID, HOME1_PARENT_ID, HOME2_PARENT_ID]
             .every(id => !id || id === 'pasteyouridhere');
 
-        if (!allPlaceholder) return null; // Keine Secondary Fallback nötig
+        if (!idsArePlaceholder) return null;
 
         const userId = ApiClient.getCurrentUserId();
         if (!userId) return null;
 
-        const ITEM_TYPES = ['Movie', 'Series'];
+        const ITEM_TYPES = ['Movie','Series'];
         const url = `${getServerAddress()}/Users/${userId}/Items?IncludeItemTypes=${ITEM_TYPES.join(',')}&Recursive=true&SortBy=Random&Limit=${FETCH_LIMIT}&Fields=Type,Name&_=${Date.now()}`;
 
         try {
@@ -122,8 +134,9 @@
     const openItem = (item, parentId) => {
         if (!item?.Id) return;
         const serverId = ApiClient.serverId();
-        const url = `${getServerAddress()}/web/index.html#!/details?id=${item.Id}` +
-            (serverId ? `&serverId=${serverId}` : '') + `&parentId=${parentId}`;
+        let url = `${getServerAddress()}/web/index.html#!/details?id=${item.Id}`;
+        if (serverId) url += `&serverId=${serverId}`;
+        if (parentId) url += `&parentId=${parentId}`;
         window.location.href = url;
     };
 
@@ -136,14 +149,15 @@
         const btn = document.createElement('button');
         btn.id = 'randomMovieButton';
         btn.className = 'random-movie-button emby-button button-flat button-flat-hover';
-        btn.title = 'Random Movie or Series';
-        btn.innerHTML = `<i class="material-icons">casino</i>`;
+        btn.title = 'Random Movie, Series, or Collection';
+        btn.innerHTML = `<i class="md-icon random-icon">casino</i>`;
 
         btn.addEventListener('click', async () => {
             btn.disabled = true;
-            btn.innerHTML = `<i class="material-icons">hourglass_empty</i>`;
+            btn.innerHTML = `<i class="md-icon random-icon">hourglass_empty</i>`;
 
             try {
+                const hash = window.location.hash.toLowerCase();
                 let item, parentId;
 
                 // Secondary Global Fallback prüfen
@@ -151,24 +165,20 @@
                 if (secondary) {
                     item = secondary.item;
                     parentId = secondary.parentId;
-                } else {
-                    const hash = window.location.hash.toLowerCase();
+                } 
+                // Home Screen fallback
+                else if (hash.includes('home.html')) {
+                    const fallback = await fetchHomeFallback();
+                    item = fallback.item;
+                    parentId = fallback.parentId;
+                } 
+                // Library / Folder
+                else {
+                    parentId = getCurrentLibraryParentId();
+                    item = await fetchRandomItem(parentId);
 
-                    let params;
-                    if (hash.includes('?')) {
-                        params = new URLSearchParams(hash.split('?')[1]);
-                        parentId = params.get('parentid');
-                    }
-
-                    if (parentId) {
-                        item = await fetchRandomItem(parentId);
-                        if (!item) {
-                            const fallback = await fetchHomeFallback();
-                            item = fallback.item;
-                            parentId = fallback.parentId;
-                        }
-                    } else {
-                        // Kein parentId vorhanden → benutze fetchHomeFallback(), TV Shows werden korrekt abgedeckt
+                    // Wenn kein Item gefunden, Home-Fallback (nur Movies/Series/Sets)
+                    if (!item) {
                         const fallback = await fetchHomeFallback();
                         item = fallback.item;
                         parentId = fallback.parentId;
@@ -176,9 +186,10 @@
                 }
 
                 if (item) openItem(item, parentId);
+
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i class="material-icons">casino</i>`;
+                btn.innerHTML = `<i class="md-icon random-icon">casino</i>`;
             }
         });
 
@@ -188,7 +199,6 @@
 
         const headerRight = document.querySelector('.headerRight');
         const searchInput = document.querySelector('.searchInput');
-
         if (headerRight) headerRight.prepend(container);
         else if (searchInput) searchInput.parentNode.insertBefore(container, searchInput.nextSibling);
         else {
