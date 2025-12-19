@@ -17,7 +17,7 @@ Installation is the same as the original, except:
   Don't forget to save the changes in your JavaScript injector and make a backup. Reload the browser site and go.
 
 - If you want more libraries or different types of libraries, the code **needs to be adjusted for your setup**.  
-  It’s pretty quick with ChatGPT; it might make a few mistakes, but after 5 or so attempts it should work.
+  It’s pretty quick with ChatGPT; it might make a few mistakes, but after a few attempts it should work.
 
 ---
 
