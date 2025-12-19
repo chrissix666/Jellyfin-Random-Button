@@ -69,7 +69,7 @@ MIT — free to use, modify, share.
 
 Initially, I tried to make the script more general by doing it without library IDs, but unfortunately, I couldn’t manage it.
 
-I also tried that when I go from the main view to random, and then switch between movie, set, and series, it wouldn’t lock afterwards, but would continue shuffling as long as the shuffle button is pressed. I even managed to implement a sort of memory with lastItemUsed. Unfortunately, it didn’t forget the lastItem when it was supposed to, resulting in random results instead of returning to the locked state.
+I also tried that when I go from the main view to random, and then switch between movie, set, and series, it wouldn’t lock afterwards, but would continue shuffling as long as the shuffle button is pressed. I even managed to implement a sort of memory with lastItemUsed. Unfortunately, it didn’t forget the lastItem when it was supposed to, resulting in random results instead of returning to the locked state. Also tried to equate seasons and episodes with the series, so that they wouldn’t have a fallback but would continue shuffling series. I think that’s possible too, but I wasn’t successful.
 
 Furthermore, I tried that if I land on a TV show, the next shuffle would shuffle a season, and the following one an episode, but that didn’t work either. The same happened when I tried to shuffle a collection, and then shuffle a movie from it next—also without success. I also attempted to implement a 'sub-shuffle button' that would only appear for collections, series, or seasons. However, I had trouble restricting its visibility: it was supposed to appear only in the respective container, but the buttons either always appeared or didn’t appear at all.
 
