@@ -38,7 +38,7 @@
     };
 
     /************************************************
-     * ParentId Helper
+     * PARENTID HELPER
      ************************************************/
     const getCurrentLibraryParentId = () => {
         const hash = window.location.hash.toLowerCase();
@@ -51,6 +51,7 @@
             else if (hash.includes('tv.html')) parentId = TVSHOWS_PARENT_ID;
             else if (hash.includes('list.html')) parentId = COLLECTIONS_PARENT_ID;
         }
+
         return parentId || null;
     };
 
@@ -75,7 +76,7 @@
             else if (parentId === COLLECTIONS_PARENT_ID) filtered = Items.filter(i => i.Type === 'Set' || i.IsFolder);
             else if (parentId === HOME1_PARENT_ID || parentId === HOME2_PARENT_ID) filtered = Items.filter(i => i.Type === 'Video');
             else if (parentId) filtered = Items.filter(i => i.Type === 'Video');
-            else filtered = Items.filter(i => ['Movie','Series','Set'].includes(i.Type)); // Fallback nur Movies/Series/Sets
+            else filtered = Items.filter(i => ['Movie','Series','Set'].includes(i.Type)); // Home-Fallback
 
             if (!filtered.length && attempt < MAX_RETRIES) return fetchRandomItem(parentId, attempt + 1);
             return filtered[Math.floor(Math.random() * filtered.length)] || null;
@@ -172,16 +173,24 @@
                     item = fallback.item;
                     parentId = fallback.parentId;
                 } 
-                // Library / Folder
+                // Library / Folder / Container
                 else {
                     parentId = getCurrentLibraryParentId();
-                    item = await fetchRandomItem(parentId);
 
-                    // Wenn kein Item gefunden, Home-Fallback (nur Movies/Series/Sets)
-                    if (!item) {
+                    // Wenn ParentId unbekannt → Home-Fallback direkt
+                    if (!parentId) {
                         const fallback = await fetchHomeFallback();
                         item = fallback.item;
                         parentId = fallback.parentId;
+                    } else {
+                        item = await fetchRandomItem(parentId);
+
+                        // Kein Item gefunden → Home-Fallback
+                        if (!item) {
+                            const fallback = await fetchHomeFallback();
+                            item = fallback.item;
+                            parentId = fallback.parentId;
+                        }
                     }
                 }
 
@@ -226,3 +235,4 @@
 
     waitForApiClient();
 })();
+
