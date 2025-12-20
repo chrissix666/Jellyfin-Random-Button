@@ -45,7 +45,6 @@
         const params = new URLSearchParams(hash.split('?')[1] || '');
         let parentId = params.get('parentid') || params.get('topparentid');
 
-        // Fallback auf bekannte Libraries anhand Hash
         if (!parentId) {
             if (hash.includes('movies.html')) parentId = MOVIES_PARENT_ID;
             else if (hash.includes('tv.html')) parentId = TVSHOWS_PARENT_ID;
@@ -76,7 +75,7 @@
             else if (parentId === COLLECTIONS_PARENT_ID) filtered = Items.filter(i => i.Type === 'Set' || i.IsFolder);
             else if (parentId === HOME1_PARENT_ID || parentId === HOME2_PARENT_ID) filtered = Items.filter(i => i.Type === 'Video');
             else if (parentId) filtered = Items.filter(i => i.Type === 'Video');
-            else filtered = Items.filter(i => ['Movie','Series','Set'].includes(i.Type)); // Home-Fallback
+            else filtered = Items.filter(i => ['Movie','Series','Set'].includes(i.Type));
 
             if (!filtered.length && attempt < MAX_RETRIES) return fetchRandomItem(parentId, attempt + 1);
             return filtered[Math.floor(Math.random() * filtered.length)] || null;
@@ -85,9 +84,6 @@
         }
     };
 
-    /************************************************
-     * HOME FALLBACK HELPER
-     ************************************************/
     const fetchHomeFallback = async () => {
         const movies = await fetchRandomItem(MOVIES_PARENT_ID);
         const series = await fetchRandomItem(TVSHOWS_PARENT_ID);
@@ -102,9 +98,6 @@
         return { item, parentId };
     };
 
-    /************************************************
-     * SECONDARY GLOBAL FALLBACK
-     ************************************************/
     const fetchSecondaryGlobalRandom = async () => {
         const idsArePlaceholder = [MOVIES_PARENT_ID, TVSHOWS_PARENT_ID, COLLECTIONS_PARENT_ID, HOME1_PARENT_ID, HOME2_PARENT_ID]
             .every(id => !id || id === 'pasteyouridhere');
@@ -129,9 +122,6 @@
         }
     };
 
-    /************************************************
-     * OPEN ITEM
-     ************************************************/
     const openItem = (item, parentId) => {
         if (!item?.Id) return;
         const serverId = ApiClient.serverId();
@@ -145,6 +135,7 @@
      * RANDOM BUTTON
      ************************************************/
     const addButton = () => {
+        if (window.location.hash.startsWith('#/video')) return;
         if (document.getElementById('randomMovieButton')) return;
 
         const btn = document.createElement('button');
@@ -161,31 +152,22 @@
                 const hash = window.location.hash.toLowerCase();
                 let item, parentId;
 
-                // Secondary Global Fallback prüfen
                 const secondary = await fetchSecondaryGlobalRandom();
                 if (secondary) {
                     item = secondary.item;
                     parentId = secondary.parentId;
-                } 
-                // Home Screen fallback
-                else if (hash.includes('home.html')) {
+                } else if (hash.includes('home.html')) {
                     const fallback = await fetchHomeFallback();
                     item = fallback.item;
                     parentId = fallback.parentId;
-                } 
-                // Library / Folder / Container
-                else {
+                } else {
                     parentId = getCurrentLibraryParentId();
-
-                    // Wenn ParentId unbekannt → Home-Fallback direkt
                     if (!parentId) {
                         const fallback = await fetchHomeFallback();
                         item = fallback.item;
                         parentId = fallback.parentId;
                     } else {
                         item = await fetchRandomItem(parentId);
-
-                        // Kein Item gefunden → Home-Fallback
                         if (!item) {
                             const fallback = await fetchHomeFallback();
                             item = fallback.item;
@@ -195,7 +177,6 @@
                 }
 
                 if (item) openItem(item, parentId);
-
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = `<i class="md-icon random-icon">casino</i>`;
@@ -207,17 +188,38 @@
         container.appendChild(btn);
 
         const headerRight = document.querySelector('.headerRight');
-        const searchInput = document.querySelector('.searchInput');
         if (headerRight) headerRight.prepend(container);
-        else if (searchInput) searchInput.parentNode.insertBefore(container, searchInput.nextSibling);
-        else {
-            container.style.position = 'fixed';
-            container.style.top = '10px';
-            container.style.right = '10px';
-            container.style.zIndex = 9999;
-            document.body.appendChild(container);
+
+        // MutationObserver
+        const observer = new MutationObserver(() => {
+            const container = document.getElementById('randomMovieButtonContainer');
+            if (!container) return;
+
+            if (window.location.hash.startsWith('#/video')) {
+                container.remove();
+            } else {
+                const headerRight = document.querySelector('.headerRight');
+                if (!headerRight) return;
+                if (headerRight.firstElementChild !== container) {
+                    headerRight.removeChild(container);
+                    headerRight.prepend(container);
+                }
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    };
+
+    /************************************************
+     * HASH MONITOR
+     ************************************************/
+    let lastHash = window.location.hash;
+    const monitorHash = () => {
+        if (window.location.hash !== lastHash) {
+            lastHash = window.location.hash;
+            if (!window.location.hash.startsWith('#/video')) addButton();
         }
     };
+    setInterval(monitorHash, 200);
 
     /************************************************
      * INIT
@@ -235,4 +237,3 @@
 
     waitForApiClient();
 })();
-
