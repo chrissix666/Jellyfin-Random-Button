@@ -37,11 +37,21 @@ I love the Randomizer! But I wanted it to have a few more features and to behave
 - **Special Behavior for Home Videos:**  
   Randomization respecting current folder level recursively, so whether your collection is flat or deeply nested, the button won’t jump across unrelated sections. This creates a more controlled and enjoyable browsing experience, letting you explore your Home Videos folder by folder without losing the element of surprise. This feature is particularly useful for large and tree nested Home Video libraries. 
 
-- **Fallback=Home Screen behaviour**  
-  The lock only applies when entering a library from the Main View. If you navigate through media via info pages, tags, genres, actors/people, or other filters, etc.., the Random Button always falls back to the Home Screen behaviour. (Movie or Set or Series)
+- **Special Behavior for Series / Seasons / Episodes:**  
+  The Random Button has additional intelligence when navigating TV content. The behavior is as follows:
+  
+  1. **Series:** If the current item is a Series, clicking the Random Button will pick a random other series from the series library.  
+  2. **Season:** If the current item is a Season, the first shuffle selects a random Episode **from that Season only**. After that, the Random Button switches to Episode-level shuffling and will pick random Episodes from **the entire series**, without considering Seasons.  
+  3. **Episode:** When already on an Episode, the Random Button always selects a random Episode from **any season within the same series**, staying fully within that series.
 
-- **The Secondary Global Fallback**
-Is a vanilla fallback that triggers when no library IDs are filled in, the 'pasteyouridhere' placeholders still in place. It randomly selects only Movies or Series (no Sets/Collections) from the user’s library, ensuring the random button always opens an item even without configured IDs, effectively reverting to the vanilla behavior with no ID adjustments.
+  This allows you to move naturally from Series → Season → Episode and then continue shuffling Episodes inside the same series, without jumping to unrelated content.
+
+- **Fallback=Home Screen behaviour:**  
+  The lock only applies when entering a library from the Main View. If you navigate through media via info pages, tags, genres, actors/people, or other filters, etc., the Random Button always falls back to the Home Screen behaviour. (Movie or Set or Series)
+
+- **The Secondary Global Fallback:**  
+  Is a vanilla fallback that triggers when no library IDs are filled in, the 'pasteyouridhere' placeholders still in place. It randomly selects only Movies or Series (no Sets/Collections) from the user’s library, ensuring the random button always opens an item even without configured IDs, effectively reverting to the vanilla behavior with no ID adjustments.
+
 ---
 
 ## 🧪 Tested On
@@ -57,8 +67,7 @@ Tested only on Jellyfin 10.10.7, on Windows 11, on Chrome.
 >
 > Jellyfin Enhanced is a great project, but it is currently not used on my side. My setup is still running on Jellyfin 10.10.7, and Jellyfin Enhanced caused subtitle-related bugs and some other issues that were not fully clear.
 >
-> In the end, only the Random Button functionality was needed. Recently i registered that the Random Button can also be injected independently via a JavaScript injector, without using Jellyfin Enhanced at all.
-
+> In the end, only the Random Button functionality was needed. Recently I registered that the Random Button can also be injected independently via a JavaScript injector, without using Jellyfin Enhanced at all.
 
 ---
 
@@ -81,7 +90,3 @@ I also tried to get randomness for other labels like tags, genres, studios, and 
 Edit: I will also try to see if it’s possible, when you’re on an actor and there are media available (movies, series, episodes), to shuffle something from that.
 
 I published this in the hope that someone who knows coding stuff better might take a look. I only worked on it with a few hours of time and a lot of help from ChatGPT. To be honest, I have very little understanding of coding itself and what it actually means. I’m not a coder. I would be grateful if someone could find the right code snippets and help make the shuffle code smarter and more flexible. Much appreciated
-
-
-
-
