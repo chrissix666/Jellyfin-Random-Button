@@ -55,6 +55,26 @@
     };
 
     /************************************************
+     * CURRENT ITEM HELPER
+     ************************************************/
+    const getCurrentItemId = () => {
+        const hash = window.location.hash;
+        const params = new URLSearchParams(hash.split('?')[1] || '');
+        return params.get('id') || null;
+    };
+
+    const fetchCurrentItem = async (itemId) => {
+        try {
+            const userId = ApiClient.getCurrentUserId();
+            if (!userId || !itemId) return null;
+            const url = `${getServerAddress()}/Users/${userId}/Items/${itemId}?Fields=Type,SeriesId,ParentId`;
+            return await ApiClient.ajax({ type: 'GET', url, dataType: 'json' });
+        } catch {
+            return null;
+        }
+    };
+
+    /************************************************
      * RANDOM ITEM FETCH
      ************************************************/
     const fetchRandomItem = async (parentId, attempt = 1) => {
@@ -132,6 +152,57 @@
     };
 
     /************************************************
+     * RANDOM NEXT HELPER (Serie / Staffel / Episode)
+     ************************************************/
+    const fetchRandomNext = async (currentItem) => {
+        if (!currentItem) return null;
+        const userId = ApiClient.getCurrentUserId();
+        if (!userId) return null;
+
+        // TV Show → normales Shuffle zu anderen Serien (vanilla)
+        if (currentItem.Type === 'Series') {
+            return await fetchRandomItem(TVSHOWS_PARENT_ID);
+        }
+
+        // Staffel → zufällige Episode innerhalb dieser Staffel
+        if (currentItem.Type === 'Season') {
+            const url = `${getServerAddress()}/Users/${userId}/Items?ParentId=${currentItem.Id}&IncludeItemTypes=Episode&SortBy=Random&Limit=${FETCH_LIMIT}`;
+            try {
+                const { Items = [] } = await ApiClient.ajax({ type: 'GET', url, dataType: 'json' });
+                return Items[Math.floor(Math.random() * Items.length)] || null;
+            } catch { return null; }
+        }
+
+        // Episode → zufällige Episode der gesamten Serie
+        if (currentItem.Type === 'Episode') {
+            try {
+                const seasonsResponse = await ApiClient.ajax({
+                    type: 'GET',
+                    url: `${getServerAddress()}/Users/${userId}/Items?ParentId=${currentItem.SeriesId}&IncludeItemTypes=Season&Fields=Id&_=${Date.now()}`,
+                    dataType: 'json'
+                });
+                const seasons = seasonsResponse.Items || [];
+
+                let allEpisodes = [];
+                for (const season of seasons) {
+                    const episodesResponse = await ApiClient.ajax({
+                        type: 'GET',
+                        url: `${getServerAddress()}/Users/${userId}/Items?ParentId=${season.Id}&IncludeItemTypes=Episode&Fields=Id&_=${Date.now()}`,
+                        dataType: 'json'
+                    });
+                    allEpisodes = allEpisodes.concat(episodesResponse.Items || []);
+                }
+
+                if (allEpisodes.length > 0) {
+                    return allEpisodes[Math.floor(Math.random() * allEpisodes.length)];
+                }
+            } catch { return null; }
+        }
+
+        return null;
+    };
+
+    /************************************************
      * RANDOM BUTTON
      ************************************************/
     const addButton = () => {
@@ -149,29 +220,42 @@
             btn.innerHTML = `<i class="md-icon random-icon">hourglass_empty</i>`;
 
             try {
+                let item = null;
+                let parentId = null;
                 const hash = window.location.hash.toLowerCase();
-                let item, parentId;
+                const currentId = getCurrentItemId();
 
-                const secondary = await fetchSecondaryGlobalRandom();
-                if (secondary) {
-                    item = secondary.item;
-                    parentId = secondary.parentId;
-                } else if (hash.includes('home.html')) {
-                    const fallback = await fetchHomeFallback();
-                    item = fallback.item;
-                    parentId = fallback.parentId;
-                } else {
-                    parentId = getCurrentLibraryParentId();
-                    if (!parentId) {
+                if (currentId) {
+                    const currentItem = await fetchCurrentItem(currentId);
+                    if (currentItem) {
+                        item = await fetchRandomNext(currentItem);
+                        if (currentItem.Type === 'Episode') parentId = currentItem.SeriesId;
+                        else parentId = item?.ParentId || currentItem.Id;
+                    }
+                }
+
+                if (!item) {
+                    const secondary = await fetchSecondaryGlobalRandom();
+                    if (secondary) {
+                        item = secondary.item;
+                        parentId = secondary.parentId;
+                    } else if (hash.includes('home.html')) {
                         const fallback = await fetchHomeFallback();
                         item = fallback.item;
                         parentId = fallback.parentId;
                     } else {
-                        item = await fetchRandomItem(parentId);
-                        if (!item) {
+                        parentId = getCurrentLibraryParentId();
+                        if (!parentId) {
                             const fallback = await fetchHomeFallback();
                             item = fallback.item;
                             parentId = fallback.parentId;
+                        } else {
+                            item = await fetchRandomItem(parentId);
+                            if (!item) {
+                                const fallback = await fetchHomeFallback();
+                                item = fallback.item;
+                                parentId = fallback.parentId;
+                            }
                         }
                     }
                 }
@@ -190,7 +274,6 @@
         const headerRight = document.querySelector('.headerRight');
         if (headerRight) headerRight.prepend(container);
 
-        // MutationObserver
         const observer = new MutationObserver(() => {
             const container = document.getElementById('randomMovieButtonContainer');
             if (!container) return;
@@ -209,9 +292,6 @@
         observer.observe(document.body, { childList: true, subtree: true });
     };
 
-    /************************************************
-     * HASH MONITOR
-     ************************************************/
     let lastHash = window.location.hash;
     const monitorHash = () => {
         if (window.location.hash !== lastHash) {
@@ -221,9 +301,6 @@
     };
     setInterval(monitorHash, 200);
 
-    /************************************************
-     * INIT
-     ************************************************/
     const init = () => {
         injectMaterialIcons();
         injectCustomCss();
