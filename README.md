@@ -14,7 +14,6 @@ Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this fo
 - The button icon changes dynamically to indicate Auto Mode
 - You can still shuffle manually while Auto Mode is active; any manual interaction **resets the timer**
 - Stops automatically when entering video playback, **double-clicking the icon again, or reloading the page**
-- Works seamlessly with Movies, Series, and Home Videos
 - Fully compatible with library locks and context-aware behavior
 - Experimental but extremely useful for passive discovery, continuous content showcasing, or just letting Jellyfin surprise you continuously!
 
