@@ -1,4 +1,4 @@
-# 🎲 Jellyfin Random Button Extended + Auto Mode ⚡🔥
+# 🎲 Jellyfin Random Button Extended + Auto Mode ⚡
 
 Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this fork extends the Random Button with **context-aware behavior inside libraries** and a **powerful Auto Mode** for continuous random browsing. Auto Mode is **experimental but highly recommended** for passive discovery!  
 
