@@ -1,135 +1,128 @@
-# Jellyfin Random Button Extended (Fork)
+# 🎲 Jellyfin Random Button Extended + Auto Mode ⚡🔥
 
-Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this modification extends the Random Button with more context-aware behavior inside libraries and an optional Auto Mode, while keeping the original random concept intact.
+Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this fork extends the Random Button with **context-aware behavior inside libraries** and a **powerful Auto Mode** for continuous random browsing. Auto Mode is **experimental but highly recommended** for passive discovery!  
+
+---
+
+## 🚀 Auto Mode First! ⚡✨
+
+**Auto Mode is the new highlight of this fork**. You can enable it using **`randombutton+automode.js`**, which adds continuous random browsing with the following behavior:
+
+- Activated by **double-clicking** the Random Button
+- Automatically opens a new random item every **12 seconds**
+- **Interval can be adjusted directly in the script to fit your needs**
+- The button icon changes dynamically to indicate Auto Mode
+- You can still shuffle manually while Auto Mode is active; any manual interaction **resets the timer**
+- Stops automatically when entering video playback, **double-clicking the icon again, or reloading the page**
+- Works seamlessly with Movies, Series, and Home Videos
+- Fully compatible with library locks and context-aware behavior
+- Experimental but extremely useful for passive discovery, continuous content showcasing, or just letting Jellyfin surprise you continuously!
+
+**Auto Mode = AutoMode = AUTOMODE! 🔥🎲⚡**  
 
 ---
 
 ## 🔧 Installation
 
-Installation is the same as the original, except:
-
 - Use the modified `randombutton.js`  
-  or, if you want Auto Mode, use **`randombutton+automode.js`** instead.
+  or, if you want Auto Mode, use the experimental feature **`randombutton+automode.js`** instead.
 
-- **The file is prepared for a standard library setup:**  
+- **Prepared for a standard library setup:**  
   1 movie library, 1 series library, 1 collection library, 2 home video libraries.
 
 - **Edit the JavaScript file:**  
-  Copy and paste the library IDs from your main libraries and replace the `pasteyouridhere` placeholders.  
-  Save the changes in your JavaScript injector, reload the browser page, and you’re done.
+  Replace all `pasteyouridhere` placeholders with your library IDs.  
+  Save the file in your JS injector and reload the page.
 
-- If you want more libraries or different types of libraries, the code **needs to be adjusted for your setup**.  
-  It’s fairly quick with ChatGPT; it may make a few mistakes, but after a few attempts it usually works.
+- For more libraries or custom setups, the code **needs minor adjustments**, which are easy to do with some basic JavaScript knowledge (or ChatGPT).
 
 ---
 
 ## 💡 What it does & Behaviour
 
-I love the Randomizer! But I wanted it to have a few more features and to behave more specifically within libraries. Here's what it does:
-
----
-
 ### **Home Screen behaviour = Fallback**
 
-From the Home View, the Random Button selects randomly from a **Movie or a Series**.
+From the Home View, the Random Button selects randomly from a **Movie or a Series**.  
 
-This behavior acts as the **primary fallback**:
-- No permanent lock or memory is stored
-- Each click evaluates the current navigation context again
-- The selection is always fresh and context-aware
-
-This keeps the original Home Screen behavior intact while avoiding unwanted or stuck states.
+- No permanent lock or memory
+- Each click evaluates the current navigation context
+- Keeps original Home Screen behavior intact
 
 ---
 
 ### **Special behaviour (locking to a library)**
 
-When you navigate into a specific library manually, the Random Button operates **within that library and media type** as long as the navigation context remains clear.
+Inside a library, the Random Button will operate **within that library and media type**.  
 
-- The lock is **implicit and context-based**
-- It only applies while you stay inside that library
-- Leaving the library (for example via Home, metadata pages, filters, etc.) automatically removes the lock
+- Lock is context-aware and implicit
+- Leaving the library automatically removes the lock
+- Works for Movies, Series, and Home Videos
 
-Examples:
+**Examples:**
 
-1. Main View → Click into a library manually → Random Button → randomizes within that library  
-2. Main View → Random Button → Movie or Series → Random Button → behavior depends on the current view context  
+1. Main View → Click into a library → Random Button → shuffles inside that library  
+2. Main View → Random Button → Movie/Series → behavior depends on current view context  
 
 ---
 
 ### **Special Behavior for Home Videos**
 
-Randomization respects the **current folder hierarchy recursively**.
-
-- Works with flat as well as deeply nested folder structures
-- Random selections stay within the current folder tree
-- Prevents jumping across unrelated Home Video sections
-
-This is especially useful for large Home Video libraries with complex directory trees.
+- Recursive folder-respecting randomization  
+- Works for flat or nested structures  
+- Stays inside the current folder tree, never jumps across unrelated sections  
 
 ---
 
 ### **Special Behavior for Series / Seasons / Episodes**
 
-The Random Button has additional logic when navigating TV content:
+- **Series:** Random other Series  
+- **Season:** Random Episode from the Season  
+- **Episode:** Random Episode from any Season within the same Series  
 
-1. **Series:**  
-   If the current item is a Series, clicking the Random Button selects a random **other Series** from the Series library.
-
-2. **Season:**  
-   If the current item is a Season, clicking Random selects a random **Episode from that Season**.
-
-3. **Episode:**  
-   When already on an Episode, clicking Random always selects a random Episode from **any Season within the same Series**.
-
-This allows natural navigation from Series → Season → Episode, and then continuous episode-level shuffling inside the same series, without jumping to unrelated content.
+Allows natural navigation Series → Season → Episode, then continuous episode-level shuffling.
 
 ---
 
 ### **Fallback = Home Screen behaviour**
 
-If the Random Button cannot determine a valid library context (for example when navigating via info pages, genres, tags, actors/people, or other filters), it always falls back to the Home Screen behavior:
-
-- Random Movie  
-- Random Series  
-
-This guarantees predictable behavior regardless of navigation path.
+- Used when no library context can be determined (info pages, genres, tags, filters, etc.)
+- Random Movie or Series
+- Guarantees predictable behavior
 
 ---
 
 ### **The Secondary Global Fallback**
 
-If no library IDs are filled in and the `pasteyouridhere` placeholders are still present, the script falls back to a vanilla behavior:
+- If `pasteyouridhere` placeholders are still present:
+  - Random Movies or Series only  
+  - No Collections  
+  - No library-specific logic  
 
-- Random selection from Movies or Series only
-- No Collections
-- No library-specific logic
-
-This ensures the Random Button always opens an item, even without configuration.
+Ensures the Random Button always opens something.
 
 ---
 
-### **Auto Mode (optional)**
+### **Auto Mode (highlight) 🎯⚡🎲🔥**
 
-An optional **Auto Mode** is available via a separate script file:
+**Experimental Auto Mode feature (randombutton+automode.js)**:  
 
-**`randombutton+automode.js`**
+- Double-click the Random Button to activate
+- Random items every **12 seconds** (customizable)
+- **Manual shuffle overrides timer but does not stop Auto Mode**
+- Stops on video playback, double-click, or page reload
+- Works across all supported libraries
+- Button icon dynamically indicates Auto Mode status
+- Perfect for passive content discovery, presentations, or endless random browsing
 
-Auto Mode behavior:
-- Activated by **double-clicking** the Random Button
-- Automatically opens a new random item every **12 seconds**
-- **The interval can be adjusted directly in the script to fit your needs**
-- The button icon changes to indicate Auto Mode
-- Any manual interaction resets the timer
-- Auto Mode stops automatically when entering video playback, **double-clicking the icon again, or reloading the page**
-
-This mode is useful for passive discovery, showcasing content, or continuous random browsing.
+**Auto Mode = AUTOMODE = autoMode = autoMode! 🎲⚡🔥🎯🎉**  
 
 ---
 
 ## 🧪 Tested On
 
-Tested only on Jellyfin 10.10.7, on Windows 11, on Chrome.
+- Jellyfin 10.10.7  
+- Windows 11  
+- Chrome  
 
 ---
 
@@ -139,16 +132,22 @@ MIT — free to use, modify, share.
 
 ---
 
-## 💡 Further attempts were made, but I failed
+## 💡 Further attempts were made
 
-Initially, I tried to make the script more general by doing it without library IDs, but unfortunately, I couldn’t manage it.
+- Tried generalization without library IDs → unsuccessful  
+- Tried to avoid locking between Movie/Series/Home View → partial success  
+- Experimented with sub-shuffle buttons for Series, Seasons, Collections → tricky UI restrictions  
+- Tag, Genre, Actor shuffling → global only, no per-library limit  
 
-I also tried to avoid locking when switching between movie, set, and series from the Home View, but it didn’t work reliably. Attempts to store temporary state like `lastItemUsed` caused incorrect behavior and stale results instead of returning to the expected fallback.
+Published with hope that someone can improve Auto Mode and shuffle logic. Limited time and coding knowledge, lots of ChatGPT help.  
 
-I tried equating seasons and episodes with the series to avoid fallback behavior, and also experimented with different shuffle depths (series → season → episode), but without success. The same applied to shuffling collections and then shuffling items inside them.
+---
 
-I also experimented with a secondary “sub-shuffle” button for collections, series, or seasons, but had trouble restricting its visibility to the correct UI containers.
+## 🔥 Auto Mode Bottom Reminder ⚡🎲✨
 
-Further attempts were made to introduce randomness for tags, genres, studios, and actors. While tag shuffling partially worked, it could not be limited to the current library or media type and always returned global results.
-
-I published this in the hope that someone with more coding experience might take a look. I worked on this with limited time and a lot of help from ChatGPT. I’m not a coder, and I’d appreciate any improvements or ideas to make the shuffle behavior smarter and more flexible.
+**Auto Mode = AUTOMODE = autoMode!**  
+- Double-click the icon to start  
+- Manual shuffling possible anytime  
+- Timer resets on manual interaction  
+- Stops on playback, double-click, or reload  
+- Continuous fun, continuous random browsing 🎯⚡🎲🔥
