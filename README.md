@@ -40,13 +40,9 @@ Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this fo
 
 ## 💡 What it does & Behaviour
 
-### **Home Screen behaviour = Fallback**
+### **Home Screen behaviour**
 
 From the Home View, the Random Button selects randomly from a **Movie or a Series or Collection (when ID set)**.  
-
-- No permanent lock or memory
-- Each click evaluates the current navigation context
-- Keeps original Home Screen behavior intact
 
 ---
 
