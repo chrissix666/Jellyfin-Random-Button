@@ -42,7 +42,7 @@ Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this fo
 
 ### **Home Screen behaviour = Fallback**
 
-From the Home View, the Random Button selects randomly from a **Movie or a Series**.  
+From the Home View, the Random Button selects randomly from a **Movie or a Series or Collection (when ID set)**.  
 
 - No permanent lock or memory
 - Each click evaluates the current navigation context
@@ -56,7 +56,7 @@ Inside a library, the Random Button will operate **within that library and media
 
 - Lock is context-aware and implicit
 - Leaving the library automatically removes the lock
-- Works for Movies, Series, and Home Videos
+- Works for Movies, Series, Collections and Home Videos when the ID's are set in the skript
 
 **Examples:**
 
@@ -83,11 +83,10 @@ Allows natural navigation Series → Season → Episode, then continuous episode
 
 ---
 
-### **Fallback = Home Screen behaviour**
+### **Fallback**
 
-- Used when no library context can be determined (info pages, genres, tags, filters, etc.)
-- Random Movie or Series
-- Guarantees predictable behavior
+- Used when no library context can be determined (info pages, genres, tags, filters, studios, etc.)
+- Random Movie or Series (on some Containers Collections if IDs set - behave still not perfected)
 
 ---
 
@@ -95,7 +94,6 @@ Allows natural navigation Series → Season → Episode, then continuous episode
 
 - If `pasteyouridhere` placeholders are still present:
   - Random Movies or Series only  
-  - No Collections  
   - No library-specific logic  
 
 Ensures the Random Button always opens something.
