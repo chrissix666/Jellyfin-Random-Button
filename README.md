@@ -130,6 +130,8 @@ MIT — free to use, modify, and share.
 
 Published with the hope that others may further improve Auto Mode and shuffle logic.
 
-## Jellyfin Enhanced Disclaimer: 
+---
+
+## Jellyfin Enhanced Disclaimer
 
 This script has not been tested with Jellyfin Enhanced. Jellyfin Enhanced includes its own Random Button, which may conflict with this script, causing unexpected behavior or crashes. It is strongly recommended to disable the Enhanced Random Button before use.
