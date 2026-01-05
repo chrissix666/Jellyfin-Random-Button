@@ -129,3 +129,7 @@ MIT — free to use, modify, and share.
 - Tag, genre, and actor shuffling is global only and not limited per library
 
 Published with the hope that others may further improve Auto Mode and shuffle logic.
+
+## Jellyfin Enhanced Disclaimer: 
+
+This script has not been tested with Jellyfin Enhanced. Jellyfin Enhanced includes its own Random Button, which may conflict with this script, causing unexpected behavior or crashes. It is strongly recommended to disable the Enhanced Random Button before use.
