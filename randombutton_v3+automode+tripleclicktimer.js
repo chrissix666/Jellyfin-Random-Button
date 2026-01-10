@@ -96,7 +96,6 @@
         manualMode = false;
         updateButtonIcon();
 
-        // Wenn ein Timer gesetzt ist, direkt damit starten
         const interval = timerStates[currentTimerIndex] * 1000;
         fetchAndOpenRandom();
         if (autoInterval) clearInterval(autoInterval);
@@ -260,80 +259,80 @@
     };
 
     /**********************
-     * BUTTON & CLICK LOGIK
+     * BUTTON & CLICK LOGIC
      **********************/
-    const timerStates = [3, 6, 12, 24, 48]; // Sekunden
-    let currentTimerIndex = timerStates.indexOf(24); // Standard 24s
+    const timerStates = [3, 6, 12, 24, 48]; // seconds
+    let currentTimerIndex = timerStates.indexOf(24); // default 24s
 
     const addButton = () => {
-        if (window.location.hash.startsWith('#/video')) return;
-        if (document.getElementById('randomMovieButton')) return;
+        // Pop-in fix: always try to add button
+        if (!document.getElementById('randomMovieButton')) {
 
-        const btn = document.createElement('button');
-        btn.id = 'randomMovieButton';
-        btn.className = 'random-movie-button emby-button button-flat button-flat-hover';
-        btn.title = 'Random Movie, Series, or Collection';
-        btn.innerHTML = `<i class="md-icon random-icon">${getStandardIcon()}</i><span class="timer-display"></span>`;
+            const btn = document.createElement('button');
+            btn.id = 'randomMovieButton';
+            btn.className = 'random-movie-button emby-button button-flat button-flat-hover';
+            btn.title = 'Random Movie, Series, or Collection';
+            btn.innerHTML = `<i class="md-icon random-icon">${getStandardIcon()}</i><span class="timer-display"></span>`;
 
-        let clickCount = 0;
-        let clickTimer = null;
+            let clickCount = 0;
+            let clickTimer = null;
 
-        btn.addEventListener('click', () => {
-            clickCount++;
+            btn.addEventListener('click', () => {
+                clickCount++;
 
-            if (clickTimer) clearTimeout(clickTimer);
+                if (clickTimer) clearTimeout(clickTimer);
 
-            clickTimer = setTimeout(() => {
-                const display = btn.querySelector('.timer-display');
+                clickTimer = setTimeout(() => {
+                    const display = btn.querySelector('.timer-display');
 
-                if (clickCount === 1) {
-                    fetchAndOpenRandom();
-                } else if (clickCount === 2) {
-                    if (manualMode) setModeAuto();
-                    else setModeManual();
-                } else if (clickCount === 3) {
-                    // Weiter zum nächsten Timerwert
-                    if (currentTimerIndex < 0) currentTimerIndex = timerStates.indexOf(24);
-                    currentTimerIndex = (currentTimerIndex + 1) % timerStates.length;
-                    const newInterval = timerStates[currentTimerIndex] * 1000;
+                    if (clickCount === 1) {
+                        fetchAndOpenRandom();
+                    } else if (clickCount === 2) {
+                        if (manualMode) setModeAuto();
+                        else setModeManual();
+                    } else if (clickCount === 3) {
+                        if (currentTimerIndex < 0) currentTimerIndex = timerStates.indexOf(24);
+                        currentTimerIndex = (currentTimerIndex + 1) % timerStates.length;
+                        const newInterval = timerStates[currentTimerIndex] * 1000;
 
-                    // Immer Timer aktualisieren
-                    if (autoInterval) {
-                        clearInterval(autoInterval);
-                        autoInterval = setInterval(fetchAndOpenRandom, newInterval);
+                        if (autoInterval) {
+                            clearInterval(autoInterval);
+                            autoInterval = setInterval(fetchAndOpenRandom, newInterval);
+                        }
+
+                        if (display) {
+                            display.textContent = timerStates[currentTimerIndex];
+                            setTimeout(() => { display.textContent = ''; }, 500);
+                        }
                     }
 
-                    // Zahl kurz anzeigen
-                    if (display) {
-                        display.textContent = timerStates[currentTimerIndex];
-                        setTimeout(() => { display.textContent = ''; }, 500);
+                    clickCount = 0;
+                }, 250);
+            });
+
+            const container = document.createElement('div');
+            container.id = 'randomMovieButtonContainer';
+            container.appendChild(btn);
+
+            // Force leftmost position
+            const headerRight = document.querySelector('.headerRight');
+            if (headerRight) headerRight.prepend(container);
+
+            const observer = new MutationObserver(() => {
+                const container = document.getElementById('randomMovieButtonContainer');
+                if (!container) return;
+                if (window.location.hash.startsWith('#/video')) { container.remove(); setModeManual(); }
+                else {
+                    const headerRight = document.querySelector('.headerRight');
+                    if (!headerRight) return;
+                    if (headerRight.firstElementChild !== container) {
+                        headerRight.removeChild(container);
+                        headerRight.prepend(container); // keep leftmost
                     }
                 }
-
-                clickCount = 0;
-            }, 250);
-        });
-
-        const container = document.createElement('div');
-        container.id = 'randomMovieButtonContainer';
-        container.appendChild(btn);
-        const headerRight = document.querySelector('.headerRight');
-        if (headerRight) headerRight.prepend(container);
-
-        const observer = new MutationObserver(() => {
-            const container = document.getElementById('randomMovieButtonContainer');
-            if (!container) return;
-            if (window.location.hash.startsWith('#/video')) { container.remove(); setModeManual(); }
-            else {
-                const headerRight = document.querySelector('.headerRight');
-                if (!headerRight) return;
-                if (headerRight.firstElementChild !== container) {
-                    headerRight.removeChild(container);
-                    headerRight.prepend(container);
-                }
-            }
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
     };
 
     let lastHash = window.location.hash;
