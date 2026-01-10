@@ -262,7 +262,7 @@
     /**********************
      * BUTTON & CLICK LOGIK
      **********************/
-    const timerStates = [3, 6, 12, 24, 48, 60]; // Sekunden
+    const timerStates = [3, 6, 12, 24, 48]; // Sekunden
     let currentTimerIndex = timerStates.indexOf(24); // Standard 24s
 
     const addButton = () => {
