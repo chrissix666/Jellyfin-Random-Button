@@ -6,7 +6,7 @@ Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this fo
 
 ## Auto Mode
 
-Auto Mode is an optional feature enabled via `randombutton+automode.js`. It provides continuous random browsing with the following behavior:
+Auto Mode is an optional feature enabled via one of the `randombutton_v2*.js`. It provides continuous random browsing with the following behavior:
 
 - Activated by double-clicking the Random Button
 - Automatically opens a new random item every 12 seconds
