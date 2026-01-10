@@ -12,7 +12,7 @@ Tip: I use this feature all the time, and it has become indispensable. It takes 
 
 ---
 
-## UPDATE v2: Auto Mode
+## UPDATE v2: Auto Mode (Double Click)
 
 Auto Mode is an optional feature enabled via one of the `randombutton_v2*.js`. It provides continuous random browsing with the following behavior:
 
