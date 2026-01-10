@@ -22,8 +22,8 @@ Auto Mode is experimental but useful for passive discovery or continuous browsin
 
 ## Installation
 
-- Use the modified `randombutton.js`  
-  or, if Auto Mode is desired, `randombutton+automode.js`.
+- Use the modified `randombutton_v1.js`  
+  or, if Auto Mode is desired, `randombutton_v2*.js`.
 
 - Prepared for a standard library setup:  
   1 movie library, 1 series library, 1 collection library, 2 home video libraries.
