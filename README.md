@@ -4,7 +4,13 @@ Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this fo
 
 ---
 
-## Auto Mode
+## UPDATE v3: Auto Mode Timer Toggle (Triple Click)
+
+The Random Shuffle timer controls the interval for automatic shuffling in auto mode. The default is 12 seconds, and the value is temporary, resetting on page reload. A triple click on the button cycles through predefined timer values (3, 6, 12, 24, 48, seconds), immediately updating the auto-shuffle interval if auto mode is active. The selected value is briefly displayed next to the button icon. This allows quick adjustment of shuffle speed: longer intervals for movies to enjoy intros or themes, shorter intervals for fast episode shuffling of familiar series.
+
+---
+
+## UPDATE v2: Auto Mode
 
 Auto Mode is an optional feature enabled via one of the `randombutton_v2*.js`. It provides continuous random browsing with the following behavior:
 
