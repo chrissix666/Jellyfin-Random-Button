@@ -6,7 +6,7 @@ Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this fo
 
 ## UPDATE v3: Auto Mode Timer Toggle (Triple Click)
 
-The Random Shuffle timer controls the interval for automatic shuffling in auto mode. The default is 12 seconds, and the value is temporary, resetting on page reload. A triple click on the button cycles through predefined timer values (3, 6, 12, 24, 48, seconds), immediately updating the auto-shuffle interval if auto mode is active. The selected value is briefly displayed next to the button icon. This allows quick adjustment of shuffle speed: longer intervals for movies to enjoy intros or themes, shorter intervals for fast episode shuffling of familiar series or also making quick shuffling games with your family from your home videos libary.
+The Random Shuffle timer enabled via the `randombutton_v3.js`controls the interval for automatic shuffling in auto mode. The default is 12 seconds, and the value is temporary, resetting on page reload. A triple click on the button cycles through predefined timer values (3, 6, 12, 24, 48, seconds), immediately updating the auto-shuffle interval if auto mode is active. The selected value is briefly displayed next to the button icon. This allows quick adjustment of shuffle speed: longer intervals for movies to enjoy intros or themes, shorter intervals for fast episode shuffling of familiar series or also making quick shuffling games with your family from your home videos libary.
 
 Tip: I use this feature all the time, and it has become indispensable. It takes a bit of muscle memory to perform triple clicks consistently, especially one after another. Currently, I haven’t found a better solution. You can reduce the number of timer steps to suit your own behavior—for example, only 3 steps. That’s why I didn’t include 60 seconds or higher, even though the maximum could go that far. For now, I use 5 settings (excluding 60 and above).
 
@@ -14,7 +14,7 @@ Tip: I use this feature all the time, and it has become indispensable. It takes 
 
 ## UPDATE v2: Auto Mode (Double Click)
 
-Auto Mode is an optional feature enabled via one of the `randombutton_v2*.js`. It provides continuous random browsing with the following behavior:
+Auto Mode is an optional feature enabled via one of the `randombutton_v2.js` or `randombutton_v3.js`. It provides continuous random browsing with the following behavior:
 
 - Activated by double-clicking the Random Button
 - Automatically opens a new random item every 12 seconds
