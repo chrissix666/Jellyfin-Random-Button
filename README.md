@@ -31,7 +31,7 @@ Auto Mode is experimental but useful for passive discovery or continuous browsin
 ## Installation
 
 - Use the modified `v1.js`  
-  or, if Auto Mode is desired, `v2*.js` or `v3*.js` (+Timer Toggle)
+  or, if Auto Mode is desired, `v2.js` or `v3.js` (+Timer Toggle)
 
 - Prepared for a standard library setup:  
   1 movie library, 1 series library, 1 collection library, 2 home video libraries.
