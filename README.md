@@ -133,7 +133,6 @@ MIT — free to use, modify, and share.
 
 - Attempts to generalize behavior without library IDs were unsuccessful
 - Avoiding cross-locking between Movie, Series, and Home views had partial success
-- Sub-shuffle buttons for Series, Seasons, or Collections were limited by UI constraints
 - Tag, genre, and actor shuffling is global only and not limited per library
 
 Published with the hope that others may further improve Auto Mode and shuffle logic.
