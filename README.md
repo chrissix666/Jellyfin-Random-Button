@@ -1,3 +1,7 @@
+[Jellyfin Projects](https://linktr.ee/JellyfinProjects) | [Kodi Projects](https://linktr.ee/KodiProjects)
+
+---
+
 # Jellyfin Random Button Extended + Auto Mode
 
 Based on [n00bcodr](https://github.com/n00bcodr/Jellyfin-Random-Button), this fork extends the Random Button with context-aware behavior inside libraries and an experimental Auto Mode for continuous random browsing.
